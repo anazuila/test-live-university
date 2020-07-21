@@ -1,0 +1,144 @@
+<script>
+  window.onload = $("#pages").hide();
+  //pagination:
+  var list = new Array();
+  var pageList = new Array();
+  var currentPage = 1;
+  var numberPerPage = 3;
+  var numberOfPages = Math.ceil(document.getElementById("quantity").value / 3);
+
+  function getNumberOfPages() {
+    return Math.ceil(list.length / numberPerPage);
+  }
+
+  function nextPage() {
+    currentPage += 1;
+    loadList();
+  }
+
+  function previousPage() {
+    currentPage -= 1;
+    loadList();
+  }
+
+  function firstPage() {
+    currentPage = 1;
+    loadList();
+  }
+
+  function lastPage() {
+    currentPage = numberOfPages;
+    loadList();
+  }
+
+  function loadList() {
+    var begin = (currentPage - 1) * numberPerPage;
+    var end = begin + numberPerPage;
+
+    pageList = list.slice(begin, end);
+    drawList();
+    check();
+  }
+
+  function drawList() {
+    document.getElementById("menu").innerHTML = "";
+    for (r = 0; r < pageList.length; r++) {
+      document.getElementById("menu").innerHTML += pageList[r] + "<br/>";
+    }
+  }
+
+  function check() {
+    document.getElementById("next").disabled =
+      currentPage == numberOfPages ? true : false;
+    document.getElementById("previous").disabled =
+      currentPage == 1 ? true : false;
+    document.getElementById("first").disabled = currentPage == 1 ? true : false;
+    document.getElementById("last").disabled =
+      currentPage == numberOfPages ? true : false;
+  }
+
+  function load() {
+    loadList();
+  }
+
+  /* When the user clicks on the button, 
+  toggle between hiding and showing the dropdown content */
+  function dropdown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
+
+  function clear() {
+    //remover todos os itens da lista:
+    $("#menu").empty();
+    list = [];
+    pageList = [];
+    currentPage = 1;
+    numberOfPages = Math.ceil(document.getElementById("quantity").value / 3);
+    $("#pages").hide();
+  }
+
+  function quantity(item) {
+    var x, text, input;
+
+    // Get the value of the input field with id="numb"
+    x = document.getElementById("quantity").value;
+
+    //chama function de limpeza
+    clear();
+
+    // If x is Not a Number or empty
+    if (isNaN(x) || x == "") {
+      text = "Input not valid";
+      input = "#f50000";
+    } else {
+      //cria o numero de elementos que foi digitado:
+      for (var i = 1; i <= x; i++) {
+        list.push("<li>Item " + item + i + "</li>");
+        //$("#menu").append('<li>Item '+item+i+'</li>');
+      }
+
+      $("#menu").append(list);
+
+      text = "";
+      input = "transparent";
+
+      load();
+      $("#pages").show();
+    }
+    document.getElementById("demo").innerHTML = text;
+    document.getElementById("quantity").style.borderColor = input;
+  }
+
+  function myFunction() {
+    document.getElementById("myDrop").classList.toggle("show");
+  }
+
+  window.onclick = function (event) {
+    // Close the dropdown if the user clicks outside of it
+    if (
+      !event.target.matches(".dropbtn") &&
+      !event.target.matches(".dropbtn2")
+    ) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains("show")) {
+          openDropdown.classList.remove("show");
+        }
+      }
+    }
+
+    // Close the dropdown2 if the user clicks outside of it
+    if (!event.target.matches(".dropbtn2")) {
+      var dropdowns = document.getElementsByClassName("dropdown2-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains("show")) {
+          openDropdown.classList.remove("show");
+        }
+      }
+    }
+  };
+</script>
